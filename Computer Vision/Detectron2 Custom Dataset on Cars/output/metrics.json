@@ -1,0 +1,1 @@
+{"fast_rcnn/cls_accuracy": 0.73046875, "fast_rcnn/false_negative": 0.2391304347826087, "fast_rcnn/fg_cls_accuracy": 0.7608695652173914, "iteration": 0, "roi_head/num_bg_samples": 52.5, "roi_head/num_fg_samples": 11.5, "rpn/num_neg_anchors": 252.5, "rpn/num_pos_anchors": 3.5}

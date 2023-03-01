@@ -1,0 +1,365 @@
+# Explanations are being added.
+Install zsh, oh my zsh, powerlevel10k; then add these plugins: git, zsh-autosuggestions, zsh-syntax-highlighting.
+Download mamba-forge and install. mamba is a faster version of conda.
+mamba create -n th python=3.10 -> Creates a new environment called th.
+mamba activate th
+which python -> /home/user_name/mambaforge/envs/th/bin/python
+du -h -d1 -> Show directory, file sizes at one level in a human readable way.
+cd - -> Change directory to most recently used one
+"pushd ~" ... popd -> Turn back to pushded place.
+ssh-keygen -> Creates private and public keys.
+mkdir dir1 dir2 -> Creates two directories.
+mkdir dir1/dir3 -> Creates one dir3 inside the dir1.
+mkdir -p nested/dir -> Creates both.
+touch red.pdf orange.png yellow.xls -> Just text files. Changes file timestamps.
+rmdir dir1 dir2 -> If the folder(s) is empty.
+rm -v -> verbose
+rm -ri zoo -> Removes interactively.
+open dir1
+open notes.odt
+mv cake cookie pie Stuff
+cp -r folder1 folder2
+cp a.txt folder1/A.txt
+head -n 11 a.txt
+tail -f /var/log/syslog  # doesn't end to show
+date > a.txt  # overwrites
+date >> a.txt  # appends
+cat -n asd.txt  # prints their line numbers
+less  a.txt  # cat with interactive UI
+ls -l | wc  # word count
+wc a.txt  # 1st number → # lines; 2nd number → # words; 3rd number → # bytes
+sort a.txt
+sort -nru numbers.txt  # sorts numerically in reverse order with unique ones
+sort a.txt | uniq -c | sort -n  # -c → numbers of duplicates
+echo *.txt  # prints out .txt files only
+echo *.???  # any 3 chars extension
+touch app.{js,py,exe,out}  → creates 4 of them
+echo Day{1..365} → prints out 365 of them
+diff file1 file2
+find . -iname '*.js' -or -iname '*.txt'  # insensitively
+find . -type f → prints out files, d → directories
+find . -type f -size +100k -size -1M
+find . -type f -exec cat {} \;
+locate <name>  → but sudo updatedb
+grep -nC 2 green SongOfMyself.txt → w line numbers 2 upper and below
+grep -r “word” . → search for all files recursively
+du -h | sort -h → human readable sort
+df -h → mounted file systems
+ps axww → all processes with their full commands
+top -o %MEM → sorts for mem field
+kill -9 12345 → sigkill
+killall <name>
+top & → top is stopped in the background or top + C^Z
+jobs → lists stopped processes
+bg; fg;
+sleep 3
+gzip -k filename → keeps the original file
+gzip -d filename.gz
+gunzip filename.gz
+tar -cf archive.tar file1 file2  # c for create, f for filename
+tar -xf archive.tar -C directory
+tar -tf archive.tar  # prints filenames
+tar -czf archive.tar.gz file1 file2 file3
+tar -xf archive.tar.gz
+alias myls='ls -al'
+find . -size +1M | xargs ls -lh
+ln original.txt hardlink.txt
+ln -s original.txt symlink.txt  # if we remove original.txt then symlink is gone
+who → users who are logged in 
+su <username>
+passwd → for changing password
+chown <owner> <file>
+chown <owner>:<group> <file>
+File types → -: regular file, d: directory, c: character special file, l: symbolic link
+r → directory's contents can be listed; w → directory's contents can be modified but only if the executable attribute is also set; x → allows a directory to be entered or “cd”ed into
+chmod <mode> <file>  u: user, g: group, o: others, a: all; -, +, =: 
+chmod uo-rwx filename
+chmod 755 file.txt == 111 101 101 == rwx r-x r-x
+-rwxrwxr-- → chmod a=rw file.txt → -rw-rw-rw-
+
+The most common shell is bash: bourn-again shell
+
+!! → the last command
+
+>date
+prints the date
+>echo hello
+hello
+>echo “Hello world”  ==  echo Hello\ world
+
+If the shell is asked to execute a command that doesn’t match one of its programming keywords, it consults an environment variable called $PATH that lists which directories the shell should search for programs when it is given a command:
+>echo $PATH  → All of the paths on the machine shell search for programs
+>which echo
+usr/bin/echo  →  I would run this program
+
+cd ./home == cd home
+cd ~  →  to home directory  →  /home/cosmos
+cd -  →  to the previous position
+ls --help  →  ls [OPTION]… [FILE]…  →  optional number of option and file
+-a, --all  →  doesn’t take a value so flag;  -c 3 →  option 
+
+>ls -l
+drwxr-xr-x 10 cosmos cosmos  4096 Aug 12 10:03 Desktop  →  d: directory
+1st three for owner of the file; 2nd three for the group; the last for everyone
+To enter a directory, a user must have “search” (represented by “execute”: x) permissions on that directory (and its parents).
+
+rmdir asd → removes a dir if it is empty already
+
+man ls → manual page
+
+ctrl + l → like clear but doesn’t remove the previous commands
+
+echo hello > hello.txt
+cat hello.txt == cat < hello.txt
+cat < hello.txt > hello2.txt → take hello.txt as input for cat then write it to hello2.txt
+cat < hello.txt >> hello2.txt → means append
+
+ls -l / | tail -n2 → the left one is input of the right one
+curl --head --silent google.com | grep -i content-length → Content-Length: 219
+curl --head --silent google.com | grep -i content-length | cut --delimiter=' ' -f2 → 219
+
+# “do” something “as su” (short for “super user”, or “root”)
+#echo 1 > /sys/net/ipv4_forward  → means do it as root
+/sys/class/backlight
+>sudo echo 3 > brightness
+An error occurred while redirecting file 'brightness'
+open: Permission denied
+sudo su then echo 500 > brightness
+The shell (which is authenticated just as your user) tries to open the brightness file for writing, before setting that as sudo echo’s output, but is prevented from doing so since the shell does not run as root.
+
+
+>echo 3 | sudo tee brightness
+Since the tee program is the one to open the /sys file for writing, and it is running as root, the permissions all work out.
+
+xdg-open lectures.html → opens with a proper program
+
+echo $SHELL → /bin/bash or /usr/bin/zsh
+
+mkdir /tmp/missing
+touch /tmp/missing/semester
+
+chmod u+x semester  → gives executability to semester
+
+./semester | grep last-modified > ~/last-modified.txt
+
+cat /sys/class/thermal/thermal_zone0/temp
+cat /sys/class/power_supply/BAT0/capacity
+cat: concatenate
+
+>foo=bar
+>echo "$foo" → bar
+echo '$foo' → $foo
+Note that foo = bar will not work since it is interpreted as calling the foo program with arguments = and bar.
+>echo “Value is $foo” → Value is bar
+>echo ‘Value is $foo’ → Value is $foo
+mcd () {  # to save ESC + :w
+    mkdir -p "$1"
+    cd "$1"
+}  # Here $1 is the first argument to the script/function.
+source mcd.sh
+mcd test
+
+$0 - Name of the script
+$1 to $9 - Arguments to the script. $1 is the first argument and so on.
+$@ - All the arguments
+$# - Number of arguments
+$? - Return code of the previous command
+$$ - Process identification number (PID) for the current script
+!! - Entire last command, including arguments. A common pattern is to execute a command only for it to fail due to missing permissions; you can quickly re-execute the command with sudo by doing sudo !!
+$_ - Last argument from the last command. If you are in an interactive shell, you can also quickly get this value by typing Esc followed by . or Alt+.
+
+>true
+>echo $?
+0
+>false
+>echo $?
+1
+
+>false || echo "Oops, fail"  → or means that run first one if not then run second one
+# Oops, fail
+>true || echo "Will not be printed"
+#
+>true && echo "Things went well"  → run second one if first one run w/o error
+# Things went well
+>false && echo "Will not be printed"
+#
+>true ; echo "This will always run"
+# This will always run
+>false ; echo "This will always run"
+# This will always run
+
+>foo=$(pwd)
+>echo $foo
+
+>for file in $(ls)  # command substitution
+>cat <(ls) <(ls ..)  # process substitution: <( CMD ) will execute CMD and place the output in a temporary file and substitute the <() with that file’s name. This is useful when commands expect values to be passed by file instead of by STDIN. For example, diff <(ls foo) <(ls bar).
+
+>shellcheck mcd.sh
+
+>ls project*
+project1 project2 project42
+>ls project?
+project1 project2
+
+>convert image.png image.jpg  ==  convert image.{png,jpg}
+>touch project{1,2}/src/test/test{1,2,3}.py  # cartesian product of them
+>mkdir foo bar
+>touch {foo,bar}/{a..j}  # all comb. a to j
+>touch foo/x bar/y
+>diff <(ls foo) <(ls bar)
+
+shebang line is needed when ./script.py a s d
+
+>find . -name src -type d  # -iname for case-insensitivity 
+>find . -path ‘*/test/*.py’ -type f
+>find . -mtime -1  # modified in the last day
+# Find all zip files with size in range 500k to 10M
+>find . -size +500k -size -10M -name '*.tar.gz'
+>find . -name “*.tmp” -exec rm {} \;
+# Find all PNG files and convert them to JPG
+>find . -name '*.png' -exec convert {} {}.jpg \;
+
+>grep -R foobar .  # search recursively
+>grep -v  # --files-without-match
+
+>rg “import os” -t py -C 5 --stats ~/scratch
+>rg -u --files-without-match “^#/!” -t sh  → -u means don’t ignore hidden files
+>rg foo -A 5  # Find all matches of foo and print the following 5 lines
+
+>cat example.py | fzf  → interactively search
+
+>nnn  → walk through directories
+
+Some differences between shell functions and scripts that you should keep in mind are:
+    • Functions have to be in the same language as the shell, while scripts can be written in any language. This is why including a shebang for scripts is important.
+    • Functions are loaded once when their definition is read. Scripts are loaded every time they are executed. This makes functions slightly faster to load, but whenever you change them you will have to reload their definition.
+    • Functions are executed in the current shell environment whereas scripts execute in their own process. Thus, functions can modify environment variables, e.g. change your current directory, whereas scripts can’t. Scripts will be passed by value environment variables that have been exported using export
+    • As with any programming language, functions are a powerful construct to achieve modularity, code reuse, and clarity of shell code. Often shell scripts will include their own function definitions.
+
+>ln  # make links between files
+
+Job control:
+sleep 10  # sleeps 10 sec.
+^C → SIGINT (Signal Interrupt)
+man signal
+SIGKILL: Terminate the process, no matter what.
+If someone ^C your program then you might want to save the process at that time maybe.
+
+>sleep 1000
+^Z  → stopped
+nohup sleep 2000 &  → run this but at the background
+>jobs
+[1]  + suspended sleep 1000
+[2]  -  running     nohup sleep 2000
+>bg %1
+[1]  - 17861 continued  sleep 1000
+>jobs
+[1]  - running    sleep 1000
+[2]  + running    nohup sleep 2000
+>kill -STOP %1
+[1]  + 17861 suspended (signal)  sleep 1000
+>jobs
+[1]  + suspended (signal)  sleep 1000
+[2]  - running    nohup sleep 2000
+>kill -HUP %1
+[1]  + 17861 hangup     sleep 1000
+>jobs
+[2]  + running    nohup sleep 2000
+>kill -HUP %2
+>jobs
+[2]  + running    nohup sleep 2000
+>kill -KILL %2
+[2]  + 17973 killed     nohup sleep 2000
+>jobs
+
+Terminal multiplexer (tmux):
+>tmux: opens a new one
+detach: ^+b, release, then d
+>tmux new -t foobar
+>tmux a -t foobar
+>tmux ls
+^b+c  →  opens a new window
+^b+p  →  jumps to previous window
+^b+n  →  jumps to next window
+^b+,   →  rename a window
+^b+”  →  splits a window into two panes horizontally
+^b+% →  splits vertically
+^b+<arrow keys> → to navigate through panes
+^b+SPACE → arranges different layouts
+^b+z → zoom that pane
+
+Dot files:
+>alias ll=”ls -lah”
+>ll
+>alias gs
+gs=”git status”
+
+Add PS1=”\w > “ to .bashrc, show working directory for bash shell.
+
+>vim ~/.config/alacritty/alacritty.yml  →  configure shell infos.
+
+Symlinks → ln -s path/to/file symlink
+
+Remote machines:
+>ssh jjgo@192.168.246.142 ls -la
+>ssh-keygen -o -a 100 -t ed25519
+>cat ~/.ssh/id_ed25519.pub | ssh jjgo@192.168.246.142 tee .ssh/authorized_keys  instead of this (?)
+>ssh-copy-id jjgo@192.168.246.142
+>scp notes.md jjgo@192.168.246.142:foobar.md  → copy local file to remote
+# SCP will start from the very beginning, trying to copy every file, whereas RSYNC will continue from where it stopped.
+>rsync -avP . Jjgo@192.168.246.142:cmd  → copy entire folder
+
+>ssh myserver ‘journalctl | grep ssh | grep “Disconnected from”’ | less: do this on the server side, and send me the lines I care about.
+sed: stream editor
+>cat ssh.log | sed ‘s/.*Disconnected from//’ | less
+.: means “any single character” except newline
+*: zero or more of the preceding match
++: one or more of the preceding match
+[abc]: any one character of a, b, and c
+(RX1|RX2): either something that matches RX1 or RX2
+^: the start of the line
+$: the end of the line
+* and + are, by default, “greedy”. They will match as much text as they can.
+Which may not be what we wanted. In some regular expression implementations, you can just suffix * or + with a ? to make them non-greedy, but sadly sed doesn’t support that. We could switch to perl’s command-line mode though, which does support that construct:
+perl -pe 's/.*?Disconnected from //'
+
+>echo ‘aba’ | sed ‘s/[ab]//’  →  ba
+>echo ‘aba’ | sed ‘s/[ab]//g’  → 
+>echo ‘abcababc’ | sed -E ‘s/(ab|bc)*//g’  → cc
+>cat ssh.log | sed -E ‘s/^.*Disconnected from (invalid |authenticating )?user (.*) [0-9.]+ port [0-9]+( \[preauth\])?$/\2/’  → ?: 0 or 1 “invalid “ → prints user names
+>asdasdasd | wc -l  → # of lines
+>asdasfasd | sort | uniq -c | sort -nk1,1 | tail -n3→ sort uniq ones and count them, then sort by column:
+3345 test
+3782 123456
+10892 root
+>asdasfasd | sort | uniq -c | sort -nk1,1 | tail -n3 | awk ‘{print $2}’ | paste -sd,: 2nds, single line with ,
+test,123456,root
+>asdasfasd | sort | uniq -c | awk ‘$1 == 1 && $2 ~ /^c.*e$/ {print $0}’
+1 cachestore				       awk works on columns
+1 calmejane
+1 camise
+
+>asdasfasd | sort |  uniq -c | awk ‘BEGIN { rows = 0 } $1 == 1 && $2 ~ /^c.*e$/ {rows += 1} END { print rows }’
+
+>asdasfasd | sort |  uniq -c | awk ‘$1 != 1 { print $1 }’ | paste -sd+ | bc -l
+
+>asdasfasd | sort |  uniq -c | awk ‘$1 != 1 { print $1 }’ | -R –slave -e ‘x ← scan(file=”stdin”, quiet=TRUE); summary(x)’  → gives statistics
+
+>asdasfasd | sort |  uniq -c | sort -nk1,1 | tail -n5 | gnuplot -p -e ‘set boxwidth 0.5; plot “-” using 1:xtic(2) with boxes’
+
+>asdasdsdasd | grep -v not_included
+
+>rustup toolchain list | grep nightly | grep -v ‘nightly-x86’ | grep 2019 | sed ‘s/-x86.*//’
+nightly-2019-03-06
+nightly-2019-04-23
+nightly-2019-05-22
+nightly-2019-06-18
+nightly-2019-07-19
+nightly-2019-08-28
+instead of → rustup toolchain uninstall nightly-2019-03-06 do:
+
+>rustup toolchain list | grep nightly | grep -v ‘nightly-x86’ | grep 2019 | sed ‘s/-x86.*//’ | xargs echo rustup toolchain uninstall  →  xargs takes a list then convert them to arguments
+
+>ffmpeg -loglevel panic -i /dev/video0 -frames 1 image2 - | convert - -colorspace gray -  | gzip | sh tsp ‘gzip -d | tee copy.png’ | feh -
+1st frame; - means std input or output; Encoding and decoding videos or images.
+
