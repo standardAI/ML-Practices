@@ -54,3 +54,5 @@ if prompt:
 
     with st.expander('Wikipedia Research'): 
         st.info(wiki_research)
+
+# Based on https://www.youtube.com/watch?v=MlK6SIjcjE8
